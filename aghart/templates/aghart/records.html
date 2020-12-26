@@ -1,0 +1,11 @@
+{% extends "aghart/base.html" %}
+
+{% block content %}
+<p>RECORDS</p>
+    <select id="ddlselect" style="width: 300px;" multiple>
+        {% for model in models %}
+            <option>{{model}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Generate records"/> 
+{% endblock content %}
