@@ -2,7 +2,8 @@
 
 {% block content %}
 <p>RECORDS</p>
-    <select id="ddlselect" style="width: 300px;" multiple>
+    <select id="ddlselect" style="width: 300px;" multiple name="filter">
+            <option placeholder="KART MODEL"></option>
         {% for model in models %}
             <option>{{model}}</option>
         {% endfor %}
