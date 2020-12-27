@@ -124,3 +124,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = "./public_html/"
+
