@@ -1,0 +1,22 @@
+{% extends "karting_track_system/base.html" %}
+
+{% block content %}
+<form method="POST" action="{% url aghart-records_generate' %}">
+    {% csrf_token %}
+    <select id="ddlselect"  name="kart_models" style="width: 500px;" multiple="multiple" >
+        <optgroup label="Kart Models"></optgroup>
+            {% for model in models %}
+                <option value={{model}}>{{model}}</option>
+            {% endfor %}
+        </optgroup>
+    </select>
+    <!-- <select id="ddlselect1"  name="sexes" style="width: 500px;" multiple="multiple" >
+        <optgroup label="Sex"></optgroup>
+             {% for sex in sexes %}
+                <option value={{sex}}>{{sex}}</option>
+            {% endfor %}
+        </optgroup>
+     </select> -->
+    <input id="button" type="submit" value="Generate records"/>
+</form>
+{% endblock content %}
