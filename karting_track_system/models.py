@@ -16,7 +16,6 @@ class Client(models.Model):
 
     class Meta:
         managed = False
-        app_label = 'karting_track_system'
         db_table = 'client'
 
 
@@ -26,30 +25,28 @@ class Kart(models.Model):
 
     class Meta:
         managed = False
-        app_label = 'karting_track_system'
         db_table = 'kart'
 
 
 class KartModel(models.Model):
     model = models.CharField(max_length=45)
-    power = models.IntegerField()
+    power = models.FloatField()
     number_of_seats = models.IntegerField()
 
     class Meta:
         managed = False
-        app_label = 'karting_track_system'
         db_table = 'kart_model'
 
 
 class Lap(models.Model):
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField(blank=True, null=True)
+    start_time = models.IntegerField()
+    end_time = models.IntegerField(blank=True, null=True)
     track = models.ForeignKey('Track', models.DO_NOTHING)
     race_drivers = models.ForeignKey('RaceDrivers', models.DO_NOTHING)
+    time = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        app_label = 'karting_track_system'
         db_table = 'lap'
 
 
@@ -59,7 +56,6 @@ class Race(models.Model):
 
     class Meta:
         managed = False
-        app_label = 'karting_track_system'
         db_table = 'race'
 
 
@@ -70,7 +66,6 @@ class RaceDrivers(models.Model):
 
     class Meta:
         managed = False
-        app_label = 'karting_track_system'
         db_table = 'race_drivers'
 
 
@@ -79,5 +74,4 @@ class Track(models.Model):
 
     class Meta:
         managed = False
-        app_label = 'karting_track_system'
         db_table = 'track'

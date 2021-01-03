@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
+    'rest_framework',
+    'karting_track_system',
 ]
 
 MIDDLEWARE = [
@@ -125,4 +126,9 @@ USE_TZ = True
 STATIC_URL = '/public_html/'
 # STATIC_URL = '/static/'
 
-STATIC_ROOT = '/public_html/'
+# STATIC_ROOT = '/public_html/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "public_html",
+    '/public_html',
+]

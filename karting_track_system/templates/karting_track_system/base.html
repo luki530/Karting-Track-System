@@ -65,18 +65,32 @@
     <script>
       $(document).ready(function()
       {
-        $("#ddlselect").select2({
-          placeholder: 'Select filters ...'
+        $("#tracks").select2({
+          placeholder: 'Select track ...'
         });
-        $('#ddlselect').on('change', function() {
-          var a = $('#ddlselect').val();
+
+        $("#kart_models").select2({
+          placeholder: 'Select kart model ...'
         });
-        $("#ddlselect1").select2({
-          placeholder: 'Select filters ...'
+
+        $("#sexes").select2({
+          placeholder: 'Select sex ...'
         });
-        $('#ddlselect1').on('change', function() {
-          var b = $('#ddlselect1').val();
+
+        $("#seats").select2({
+          placeholder: 'Select number of seats ...'
         });
+
+        $('form').on('submit', function(){
+            var minimum = 1;
+
+            if($("#tracks").select2('data').length >= minimum){
+                return true;
+            }else {
+              alert('Please choose at least ' + minimum + ' track')
+                return false;
+            }
+        })
       });
     </script>
   </body>

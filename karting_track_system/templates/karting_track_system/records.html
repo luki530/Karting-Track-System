@@ -1,22 +1,57 @@
 {% extends "karting_track_system/base.html" %}
 
 {% block content %}
-<form method="POST" action="{% url aghart-records_generate' %}">
+<form method="POST" action="{% url 'records' %}">
     {% csrf_token %}
-    <select id="ddlselect"  name="kart_models" style="width: 500px;" multiple="multiple" >
-        <optgroup label="Kart Models"></optgroup>
-            {% for model in models %}
-                <option value={{model}}>{{model}}</option>
-            {% endfor %}
-        </optgroup>
+    <select id="tracks"  name="tracks" style="width: 500px;" multiple="multiple" >
+        {% for track in tracks %}
+            <option value={{track.id}}>{{track.shape}}</option>
+        {% endfor %}
     </select>
-    <!-- <select id="ddlselect1"  name="sexes" style="width: 500px;" multiple="multiple" >
-        <optgroup label="Sex"></optgroup>
-             {% for sex in sexes %}
-                <option value={{sex}}>{{sex}}</option>
-            {% endfor %}
-        </optgroup>
-     </select> -->
+
+    <select id="kart_models"  name="kart_models" style="width: 500px;" multiple="multiple" >
+        {% for model in models %}
+            <option value={{model.id}}>{{model.model}}</option>
+        {% endfor %}
+    </select>
+
+    <select id="sexes"  name="sexes" style="width: 500px;" multiple="multiple" >
+        {% for sex in sexes %}
+            <option value={{sex}}>{{sex}}</option>
+        {% endfor %}
+     </select>
+
+     <select id="seats"  name="seats" style="width: 500px;" multiple="multiple" >
+        {% for seat in seats %}
+            <option value={{seat}}>{{seat}}</option>
+        {% endfor %}
+    </select>
+
     <input id="button" type="submit" value="Generate records"/>
 </form>
+
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Time</th>
+        <th scope="col">Model</th>
+        <th scope="col">Shape</th>
+        <th scope="col">Sex</th>
+        <th scope="col">No. of seats</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for time in times %}
+            <tr>
+                <th scope="row">1</th>
+                <td>{{time.time}}</td>
+                <td>{{time.model}}</td>
+                <td>{{time.shape}}</td>
+                <td>{{time.sex}}</td>
+                <td>{{time.number_of_seats}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table
 {% endblock content %}

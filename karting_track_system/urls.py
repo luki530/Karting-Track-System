@@ -18,9 +18,8 @@ from django.urls import path
 from karting_track_system import views
 
 urlpatterns = [
-    path('',views.home, name= 'home'),
-    # path('admin/', admin.site.urls),
+    path('',views.home, name = 'home'),
+    path('admin/', admin.site.urls),
     path('records/', views.records, name = 'records'),
-    path('statistics/', views.statistics, name = 'statistics'),
-    path('records/generate', views.generateRecords, name = 'records_generate')
+    path('statistics/', views.statistics, name = 'statistics')
 ]
