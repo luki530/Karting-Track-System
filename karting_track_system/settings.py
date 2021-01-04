@@ -123,12 +123,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-#STATIC_URL = '/public_html/'
-STATIC_URL = '/static/'
+STATIC_URL = '/public_html/'
+#STATIC_URL = '/static/'
 
-STATIC_ROOT = '/public_html/'
+#STATIC_ROOT = '/public_html/'
 
-#STATICFILES_DIRS = [
-#    BASE_DIR / "public_html",
-#    '/public_html',
-#]
+STATICFILES_DIRS = [
+    BASE_DIR / "public_html",
+    '/public_html',
+]
