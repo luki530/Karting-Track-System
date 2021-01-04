@@ -8,7 +8,7 @@ int main()
 {
 	ofstream race;
 	race.open("race.sql");
-	race << "DELETE FROM `race_drivers`;" << endl << "INSERT INTO `race_drivers` (`id`, `race_id`, `kart_id`, `client_id`)" << endl;
+	race << "INSERT INTO `race` (`id`, `date`, `number`) VALUES" << endl;
 	long long start_time = 1577869200; //1 stycznia 9:00 2020
     int day = 86400;
     int random = 0;
@@ -29,16 +29,15 @@ int main()
     
 	ofstream race_drivers;
 	race_drivers.open("race_drivers.sql");
-	race_drivers<<"DELETE FROM `race_drivers`;"<<endl<< "INSERT INTO `race_drivers` (`id`, `race_id`, `kart_id`, `client_id`) VALUES " <<endl;
+	race_drivers << "INSERT INTO `race_drivers` (`id`, `race_id`, `kart_id`, `client_id`) VALUES " <<endl;
 	ofstream laps;
 	laps.open("laps.sql");
-	laps<< "DELETE FROM `lap`;" << endl <<"INSERT INTO `lap` (`id`, `start_time`, `end_time`, `track_id`, `race_drivers_id`) VALUES" <<endl;
+	laps <<"INSERT INTO `lap` (`id`, `start_time`, `end_time`, `track_id`, `race_drivers_id`) VALUES" <<endl;
     int licznik = 1;
     int liczniklap = 1;
     int ids[100]={0};
-    int karts[120]={0};
-    int tracks[18]={0};
     int temp = 0;
+    int karts = 0;
     int track_random = 0;
     int suma_czasow = 0;//suma kolek
     int time_base = 25000;
@@ -49,23 +48,17 @@ int main()
     for(int i = 0; i<100; i++){
         ids[i]=i+1;
     }
-    for(int i = 0; i<120; i++){
-        karts[i]=i+1;
-    }
-    for(int i = 0; i<18; i++){
-        tracks[i]=i+1;
-    }
     
     random_shuffle(begin(ids), end(ids));
-    random_shuffle(begin(karts), end(karts));
     
     
     for(int i =1; i<=licznik0; i++){
-        temp = rand() % 5;
+        temp = rand() % 6;
+        karts = 10*(rand() % 12);
         for(int j = 0; j < 5+temp; j++){
-            race_drivers << "("+to_string(licznik)+", '"+to_string(i)+"', '"+to_string(karts[j])+"', '"+to_string(ids[j])+"')," << endl;
+            race_drivers << "("+to_string(licznik)+", '"+to_string(i)+"', '"+to_string(karts+j+1)+"', '"+to_string(ids[j])+"')," << endl;
             suma_czasow=0;
-            track_random = rand()%18;
+            track_random = rand()%18+1;
             time_base = 25000 + (track_random/18)*70000;
             for(int k = 0; suma_czasow<480000; k++){
             	czas_lap = time_base + rand()%10000;
@@ -78,7 +71,6 @@ int main()
             licznik++;
         }
         random_shuffle(begin(ids), end(ids));
-        random_shuffle(begin(karts), end(karts));
     }
     race_drivers.seekp(-3,ios::end);
 	race_drivers<<";";	
@@ -102,4 +94,3 @@ int main()
     ilaps.close();
     return 0;
 }
-
