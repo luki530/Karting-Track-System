@@ -1,5 +1,5 @@
-DELETE FROM `race_drivers`;
-INSERT INTO `race_drivers` (`id`, `race_id`, `kart_id`, `client_id`)
+DELETE FROM `race`;
+INSERT INTO `race` (`id`, `date`, `number`)
 (1,FROM_UNIXTIME(1600765200), '1'),
 (2,FROM_UNIXTIME(1600765200), '2'),
 (3,FROM_UNIXTIME(1600765200), '3'),
