@@ -100,36 +100,3 @@ body {
     border-style: solid;
     border-color: #394a6d;
   }
-
-  .arrow {
-     position: relative;
-     height: 15px;
-     width: 15px;
-  } 
-  .arrow::before, .arrow::after {
-     content: "";
-     position: absolute;
-     bottom: 0px;
-     width: 0.15rem;
-     height: 100%;
-     transition: all 0.5s;
-  }
-  .arrow::before {
-     left: -5px;
-     transform: rotate(45deg);
-     background-color: #394a6d;
-  }
-  .arrow::after {
-      left: 5px;
-      transform: rotate(-45deg);
-      background-color: #394a6d;
-  }
-  .open .arrow::before {
-      left: -5px;
-      transform: rotate(-45deg);
-  }
-  .open .arrow::after {
-      left: 5px;
-      transform: rotate(45deg);
-  }
-

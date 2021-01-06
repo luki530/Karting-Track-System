@@ -2,11 +2,10 @@
 
 {% block content %}
     <form method="POST" action="{% url 'records' %}">
-        
-        <div class="form-group row">
-            {% csrf_token %}
+        {% csrf_token %}
+        <div class="form-group row">  
             <div class="col-sm-10">
-                <select id="tracks"  name="tracks" class="custom-select" style="width: 500px;" multiple="multiple" >
+                <select id="tracks"  name="tracks" class="custom-select" style="width: 500px;" multiple>
                     {% for track in tracks %}
                         <option value={{track.id}}>{{track.shape}}</option>
                     {% endfor %}
@@ -16,7 +15,7 @@
 
         <div class="form-group row">
             <div class="col-sm-10">
-                <select id="kart_models"  name="kart_models" style="width: 500px;" multiple="multiple" >
+                <select id="kart_models"  name="kart_models" style="width: 500px;" multiple>
                     {% for model in models %}
                         <option value={{model.id}}>{{model.model}}</option>
                     {% endfor %}
@@ -26,7 +25,7 @@
 
         <div class="form-group row">
             <div class="col-sm-10">
-                <select id="sexes"  name="sexes" style="width: 500px;" multiple="multiple" >
+                <select id="sexes"  name="sexes" style="width: 500px;" multiple>
                     {% for sex in sexes %}
                         <option value={{sex}}>{{sex}}</option>
                     {% endfor %}
@@ -36,7 +35,7 @@
 
         <div class="form-group row">
             <div class="col-sm-10">
-                <select id="seats"  name="seats" style="width: 500px;" multiple="multiple" >
+                <select id="seats"  name="seats" style="width: 500px;" multiple>
                     {% for seat in seats %}
                         <option value={{seat}}>{{seat}}</option>
                     {% endfor %}

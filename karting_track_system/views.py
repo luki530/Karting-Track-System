@@ -11,13 +11,6 @@ sexes = []
 times = []
 tracks = []
 seats = []
-def dictfetchall(cursor):
-    "Return all rows from a cursor as a dict"
-    columns = [col[0] for col in cursor.description]
-    return [
-        dict(zip(columns, row))
-        for row in cursor.fetchall()
-    ]
 
 
 
@@ -29,7 +22,16 @@ def records(request):
     return render(request, 'karting_track_system/records.html', {'models': getModels(models) ,'sexes':getSexes(sexes), 'tracks': getTracks(tracks), 'seats': getSeats(seats), 'times':displayRecords(request)})
 
 def statistics(request):
-    return render(request, 'karting_track_system/statistics.html')
+    race_numbers = getDate(request)
+    if request.method == 'POST':
+        return render(request, 'karting_track_system/races.html',{'races':race_numbers})
+    else:
+        return render(request, 'karting_track_system/statistics.html')
 
-def generateRecords(request):
-    return render(request, 'karting_track_system/records.html')
+def races(request):
+    full = displayRaces(request)
+    graph = return_graph(request)
+    return render(request, 'karting_track_system/races.html',{'full': full,'range': range(0,len(full)), 'graph':graph})
+    
+   
+
