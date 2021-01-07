@@ -1,9 +1,10 @@
 from karting_track_system.models import *
 from django.http import HttpResponse
 from collections import OrderedDict
-import matplotlib.pyplot as plt
-from io import StringIO
-import numpy as np
+from plotly.offline import plot, iplot
+from plotly.graph_objs import Scatter
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 def getDate(request):
     date = []
@@ -24,7 +25,7 @@ def displayRaces(request):
     if request.method == 'POST':
         if request.POST.getlist('races'):
             numbers = request.POST.getlist('races')
-            print(numbers)
+            # print(numbers)
         drivers = RaceDrivers.objects.raw('select * from race_drivers rd left join race r on rd.race_id=r.id where r.id = %s', [numbers])
 
         for rd in drivers:
@@ -40,28 +41,11 @@ def displayRaces(request):
         lent = ['#' + str(i) for i in range(1, temp_lent+1)]
         first_col = ['Name','Best time','Worst time','Mean time'] + lent
         full.insert(0,first_col)
-        print(full[1][4:-1])
+        # for i in range(1,len(full)):
+        #     print(full[i][4:-1])
 
         return full
 
-def return_graph(request):
-    axis = displayRaces(request)
-    y = axis[1][4:-1]
-    x = [j for j in range(1,len(y)+1)]
-    
-    
-
-    fig = plt.figure()
-    plt.plot(x,y)
-
-    plt.title(str(axis[1][0]) + " - times of laps")
-
-    imgdata = StringIO()
-    fig.savefig(imgdata, format='svg')
-    imgdata.seek(0)
-
-    data = imgdata.getvalue()
-    return data
 
 
 def displayRecords(request):
@@ -74,29 +58,29 @@ def displayRecords(request):
 
         if request.POST.getlist('kart_models'):
             models = request.POST.getlist('kart_models')
-            print(models)
-            print(int(cos))
+            # print(models)
+            # print(int(cos))
 
         else:
             models = [None]
 
         if request.POST.getlist('sexes'):
             sexes = request.POST.getlist('sexes')
-            print(sexes)
+            # print(sexes)
         
         else:
             sexes = [None]
 
         if request.POST.getlist('tracks'):
             shapes = request.POST.getlist('tracks')
-            print(shapes)
+            # print(shapes)
 
         else:
             shapes = [None]
 
         if request.POST.getlist('seats'):
             no_of_seats = request.POST.getlist('seats')
-            print(no_of_seats)
+            # print(no_of_seats)
 
         else:
             no_of_seats = [None]
@@ -106,8 +90,55 @@ def displayRecords(request):
         shapes_placeholders = ', '.join(['{}'] * len(shapes))
         no_of_seats_placeholders = ', '.join(['{}'] * len(no_of_seats))
         records = Lap.objects.raw('select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id where km.id in ({}) and t.id in ({}) and km.number_of_seats in ({}) and c.sex in ({})'.format(models_placeholders, shapes_placeholders, no_of_seats_placeholders, sexes_placeholders).format(*models,*shapes,*no_of_seats,*sexes))
-        print(records)
+        
         return records
     else:
         records = Lap.objects.raw('select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id limit 20')
         return records
+
+
+
+def plot(request):
+    y = []
+    x = []
+    title = []
+    axis = displayRaces(request)
+    for i in range(1,len(axis)):
+        y.append(axis[i][4:])
+        x.append([i for i in range(1, len(y[i-1])+1)])
+        title.append(axis[i][0])
+
+    # print(x)
+    # print(y)
+    # print(title)
+    fig = make_subplots()
+    colors=["#800000", "#FF0000", "#800080", "#FF00FF","#008000", "#00FF00", "#808000","#000080", "#0000FF", "#008080", "#00FFFF"]
+    for i in range(0,len(title)):
+        fig.add_trace(go.Scatter(x=x[i], y=y[i],mode='lines', name=title[i],opacity=0.8, marker_color=colors[i]))
+  
+    # updatemenus=list([
+    # dict(
+    #     buttons=[],
+    #     direction = 'down',
+    #     pad = {'r': 10, 't': 10},
+    #     showactive = True,
+    #     x = 0,
+    #     xanchor = 'left',
+    #     y = 1.2,
+    #     yanchor = 'top' 
+    #     ),
+    # ])
+
+    # lister = []
+    # for k in range(0,len(title)):
+    #     lister.append(dict(
+    #         args=['visible', [True for k in range(0,len(title))] if k == 0 else [True if (i+1) == k else False for i in range(0,len(title))]],
+    #         label=str( 'All' if k == 0 else title[k]),
+    #         method='restyle'
+    #     ))
+
+    updatemenus[0]['buttons'] = lister
+
+    fig['layout']['updatemenus'] = updatemenus
+
+    return fig.show()

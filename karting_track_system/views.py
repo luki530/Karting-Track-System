@@ -4,6 +4,7 @@ from django.db import connection
 from karting_track_system.models import *
 from karting_track_system.repository import *
 from karting_track_system.controller import *
+
 # Create your views here.
 models = []
 params = []
@@ -23,6 +24,7 @@ def records(request):
 
 def statistics(request):
     race_numbers = getDate(request)
+
     if request.method == 'POST':
         return render(request, 'karting_track_system/races.html',{'races':race_numbers})
     else:
@@ -30,8 +32,8 @@ def statistics(request):
 
 def races(request):
     full = displayRaces(request)
-    graph = return_graph(request)
-    return render(request, 'karting_track_system/races.html',{'full': full,'range': range(0,len(full)), 'graph':graph})
+    plots = plot(request)
+    return render(request, 'karting_track_system/races.html',{'full': full,'range': range(0,len(full)),'plots': plots})
     
    
 
