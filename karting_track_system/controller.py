@@ -6,39 +6,69 @@ def displayRecords(request):
     sexes = []
     shapes = []
     no_of_seats = []
+    first = True
+    query = 'select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id'
     if request.method=='POST':
 
         if request.POST.getlist('kart_models'):
             models = request.POST.getlist('kart_models')
-            print(models)
-
-        else:
-            models = [None]
+            if not first:
+                query+=' and '
+            else:
+                query+=' where '
+                first = False
+            try:    
+                query+='km.id in ('+str(int(models.pop()[0]))
+                for model in models:
+                    query+=', ' + str(int(model))
+            except ValueError:
+                print('RAISE EXCEPTION')
+            query+=')'
 
         if request.POST.getlist('sexes'):
             sexes = request.POST.getlist('sexes')
-            print(sexes)
-        
-        else:
-            sexes = [None]
+            if not all(len(n) == 1 for n in sexes):
+                print('RAISE EXCEPTION')
+            if not first:
+                query+=' and '
+            else:
+                query+=' where '
+                first = False
+            query+='c.sex in (\''+sexes.pop()[0]+'\''
+            for sex in sexes:
+                query+=', \'' + sex +'\''
+            query+=')'
 
         if request.POST.getlist('tracks'):
             shapes = request.POST.getlist('tracks')
-            print(shapes)
-
-        else:
-            shapes = [None]
+            if not first:
+                query+=' and '
+            else:
+                query+=' where '
+                first = False
+            try:
+                query+='t.id in ('+str(int(shapes.pop()[0]))
+                for shape in shapes:
+                    query+=', ' + str(int(shape))
+            except ValueError:
+                print('RAISE EXCEPTION')
+            query+=')'
 
         if request.POST.getlist('seats'):
             no_of_seats = request.POST.getlist('seats')
-            print(no_of_seats)
+            if not first:
+                query+= ' and '
+            else:
+                query+=' where '
+                first = False
+            try:
+                query += 'km.number_of_seats in ('+str(no_of_seats.pop()[0])
+                for no in no_of_seats:
+                    query+=', ' + str(no)
+            except ValueError:
+                print('RAISE EXCEPTION')
+            query+=')'
 
-        else:
-            no_of_seats = [None]
-
-        records = Lap.objects.raw('select l.id, l.end_time-start_time as "time" , t.shape, km.model, c.sex, km.number_of_seats from lap l natural join track t natural join kart_model km natural join client c where km.id in %s and t.id in %s and km.number_of_seats in %s and c.sex in %s', [tuple(models), tuple(shapes), tuple(no_of_seats), tuple(sexes)])
-        print(records)
-        return records
-    else:
-        records = Lap.objects.raw('select l.id, l.end_time-start_time as "time" , t.shape, km.model, c.sex, km.number_of_seats from lap l natural join track t natural join kart_model km natural join client c')      
-        return records
+    query+=' order by time limit 20'
+    records = Lap.objects.raw(query)
+    return records
