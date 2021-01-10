@@ -1,5 +1,67 @@
 {% extends "karting_track_system/base.html" %}
 
 {% block content %}
-<p>STATISTICS</p>
+<form method="POST" action="{% url 'statistics' %}">
+    {% csrf_token %}
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <div class="input-group date" id="datetimepicker1" data-target-input="nearest" >
+                <input name="date" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <input id="button" type="submit" name="btn1" value="Choose date of race" class="btn btn-dark"/>
+        </div>
+    </div>
+    
+</form>
+
+{% if request.POST.date or request.POST.races %}
+
+    <form id="form2" method="POST" action="{% url 'statistics' %}">
+        {% csrf_token %}
+        <div class="form-group row">  
+            <div class="col-sm-4">
+                <select id="races"  name="races" class="custom-select"  multiple>
+                    {% for race in races %}
+                        <option value={{race.id}}>{{race.number}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <input id="button" name="btn2" type="submit" value="Choose race number"class="btn btn-dark"/>
+            </div>
+
+    </form>
+
+    <!-- {% if request.POST.races %}
+        
+            <div class="col-sm-4">
+                <input value="Show plots" onclick="plots()" class="btn btn-dark"/>
+            </div>
+        
+    {% endif %} -->
+</div>
+
+    <table id="table1" class="table table-dark table-hover">
+        <tbody>
+            {% for x in full %}
+                <tr >
+                    {% for i in x %}
+                        <td >{{i}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div>
+        {{ plots|safe }}
+    </div>
+
+{% endif %}  
 {% endblock content %}

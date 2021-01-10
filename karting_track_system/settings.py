@@ -129,6 +129,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/public_html/'
 
 #STATICFILES_DIRS = [
-#    BASE_DIR / "public_html",
-#    '/public_html',
+#   BASE_DIR / "public_html",
+#   '/public_html',
 #]

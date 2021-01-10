@@ -1,9 +1,6 @@
 from karting_track_system.models import *
 from karting_track_system.controller import *
 
-
-
-
 def getModels(self):
     models = KartModel.objects.raw('select * from kart_model')
     return models
