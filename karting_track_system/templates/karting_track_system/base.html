@@ -121,7 +121,7 @@
           placeholder: 'Select race number ...'
         });
 
-        $('form').on('submit', function(){
+        $('#form1').on('submit', function(){
             var minimum = 1;
 
             if($("#tracks").select2('data').length >= minimum){
@@ -130,7 +130,21 @@
               alert('Please choose at least ' + minimum + ' track')
                 return false;
             }
+            
         })
+
+        $('#form2').on('submit', function(){
+            var minimum = 1;
+
+            if($("#races").select2('data').length == minimum){
+                return true;
+            }else {
+              alert('Please choose only ' + minimum + ' race')
+                return false;
+            }
+            
+        })
+        
       });
     </script>
   </body>

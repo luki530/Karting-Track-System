@@ -5,7 +5,7 @@ from plotly.offline import plot, iplot
 from plotly.graph_objs import Scatter
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-
+import datetime
 def getDate(request):
     date = []
     if request.method=='POST':
@@ -21,7 +21,9 @@ def displayRaces(request):
     numbers = []
     laps = []
     full = []
+    full_for_plot = []
     temp_lent = 0
+
     if request.method == 'POST':
         if request.POST.getlist('races'):
             numbers = request.POST.getlist('races')
@@ -34,17 +36,28 @@ def displayRaces(request):
             
             if len(times) > temp_lent:
                 temp_lent = len(times)
+            
+            base = [race_info[0].name, race_info[0].best, race_info[0].worst, round(race_info[0].mean)]
 
-            x = [i.time for i in times]
-            full.append([race_info[0].name, race_info[0].best, race_info[0].worst, race_info[0].mean] + x)
+            for i in range(1,len(base)):
+                base[i] = datetime.datetime.fromtimestamp(base[i]/1000).strftime('%M:%S.%f')[:-3]
+
+            x = [datetime.datetime.fromtimestamp(i.time/1000).strftime('%M:%S.%f')[:-3] for i in times]
+            full.append(base + x)
+
+
+
+            x_for_plot = [i.time for i in times]
+            full_for_plot.append([race_info[0].name, race_info[0].best, race_info[0].worst, race_info[0].mean] + x_for_plot)
         
         lent = ['#' + str(i) for i in range(1, temp_lent+1)]
         first_col = ['Name','Best time','Worst time','Mean time'] + lent
         full.insert(0,first_col)
+        full_for_plot.insert(0,first_col)
         # for i in range(1,len(full)):
         #     print(full[i][4:-1])
 
-        return full
+        return full, full_for_plot
 
 
 
@@ -90,10 +103,13 @@ def displayRecords(request):
         shapes_placeholders = ', '.join(['{}'] * len(shapes))
         no_of_seats_placeholders = ', '.join(['{}'] * len(no_of_seats))
         records = Lap.objects.raw('select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id where km.id in ({}) and t.id in ({}) and km.number_of_seats in ({}) and c.sex in ({})'.format(models_placeholders, shapes_placeholders, no_of_seats_placeholders, sexes_placeholders).format(*models,*shapes,*no_of_seats,*sexes))
-        
+        for i in range(0,len(records)):
+            records[i].time = datetime.datetime.fromtimestamp(records[i].time/1000).strftime('%M:%S.%f')[:-3]
         return records
     else:
         records = Lap.objects.raw('select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id limit 20')
+        for i in range(0,len(records)):
+            records[i].time = datetime.datetime.fromtimestamp(records[i].time/1000).strftime('%M:%S.%f')[:-3]
         return records
 
 
@@ -102,7 +118,7 @@ def plot(request):
     y = []
     x = []
     title = []
-    axis = displayRaces(request)
+    _, axis = displayRaces(request)
     for i in range(1,len(axis)):
         y.append(axis[i][4:])
         x.append([i for i in range(1, len(y[i-1])+1)])
@@ -111,7 +127,7 @@ def plot(request):
     # print(x)
     # print(y)
     # print(title)
-    fig = make_subplots()
+    fig = make_subplots(x_title='Lap number',y_title='Time in milliseconds')
     colors=["#800000", "#FF0000", "#800080", "#FF00FF","#008000", "#00FF00", "#808000","#000080", "#0000FF", "#008080", "#00FFFF"]
     for i in range(0,len(title)):
         fig.add_trace(go.Scatter(x=x[i], y=y[i],mode='lines', name=title[i],opacity=0.8, marker_color=colors[i]))
@@ -137,8 +153,8 @@ def plot(request):
     #         method='restyle'
     #     ))
 
-    updatemenus[0]['buttons'] = lister
+    # updatemenus[0]['buttons'] = lister
 
-    fig['layout']['updatemenus'] = updatemenus
+    # fig['layout']['updatemenus'] = updatemenus
 
-    return fig.show()
+    return fig.to_html(full_html=False, include_plotlyjs='cdn',default_height=800, default_width = 1200)

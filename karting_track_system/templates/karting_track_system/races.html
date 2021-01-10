@@ -1,7 +1,9 @@
 {% extends "karting_track_system/base.html" %}
 
 {% block content %}
-    <form method="POST" action="{% url 'races' %}">
+
+
+    <form  method="POST" action="{% url 'races' %}">
         {% csrf_token %}
         <div class="form-group row">  
             <div class="col-sm-10">
@@ -21,6 +23,11 @@
 
     </form>
 
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <input id="button" type="submit" onclick="plots()" value="Show plots" class="btn btn-dark"/>
+        </div>
+    </div>
 
     <table id="table1" class="table table-dark table-hover">
         <tbody>
