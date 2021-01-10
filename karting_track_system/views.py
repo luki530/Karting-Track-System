@@ -19,7 +19,6 @@ def home(request):
     return render(request, 'karting_track_system/home.html')
 
 def records(request):
-    times = displayRecords(request)
     return render(request, 'karting_track_system/records.html', {'models': getModels(models) ,'sexes':getSexes(sexes), 'tracks': getTracks(tracks), 'seats': getSeats(seats), 'times':displayRecords(request)})
 
 def statistics(request):

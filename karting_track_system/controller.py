@@ -6,6 +6,82 @@ from plotly.graph_objs import Scatter
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import datetime
+
+
+def displayRecords(request):
+    models = []
+    sexes = []
+    shapes = []
+    no_of_seats = []
+
+    first = True
+    query = 'select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id'
+
+    if request.method=='POST':
+
+        if request.POST.getlist('kart_models'):
+            models = request.POST.getlist('kart_models')
+            if not first:
+                query+=' and '
+            else:
+                query+=' where '
+                first = False
+            try:    
+                query+='km.id in ('+str(int(models.pop()[0]))
+                for model in models:
+                    query+=', ' + str(int(model))
+            except ValueError:
+                print('RAISE EXCEPTION')
+            query+=')'
+
+        if request.POST.getlist('sexes'):
+            sexes = request.POST.getlist('sexes')
+            if not all(len(n) == 1 for n in sexes):
+                print('RAISE EXCEPTION')
+            if not first:
+                query+=' and '
+            else:
+                query+=' where '
+                first = False
+            query+='c.sex in (\''+sexes.pop()[0]+'\''
+            for sex in sexes:
+                query+=', \'' + sex +'\''
+            query+=')'
+
+        if request.POST.getlist('tracks'):
+            shapes = request.POST.getlist('tracks')
+            if not first:
+                query+=' and '
+            else:
+                query+=' where '
+                first = False
+            try:
+                query+='t.id in ('+str(int(shapes.pop()[0]))
+                for shape in shapes:
+                    query+=', ' + str(int(shape))
+            except ValueError:
+                print('RAISE EXCEPTION')
+            query+=')'
+
+        if request.POST.getlist('seats'):
+            no_of_seats = request.POST.getlist('seats')
+            if not first:
+                query+= ' and '
+            else:
+                query+=' where '
+                first = False
+            try:
+                query += 'km.number_of_seats in ('+str(no_of_seats.pop()[0])
+                for no in no_of_seats:
+                    query+=', ' + str(no)
+            except ValueError:
+                print('RAISE EXCEPTION')
+            query+=')'
+
+    query+=' order by time limit 20'
+    records = Lap.objects.raw(query)
+    return records
+ 
 def getDate(request):
     date = []
     if request.method=='POST':
@@ -58,61 +134,6 @@ def displayRaces(request):
         #     print(full[i][4:-1])
 
         return full, full_for_plot
-
-
-
-def displayRecords(request):
-    models = []
-    sexes = []
-    shapes = []
-    no_of_seats = []
-    cos = '123Michal13'
-    if request.method=='POST':
-
-        if request.POST.getlist('kart_models'):
-            models = request.POST.getlist('kart_models')
-            # print(models)
-            # print(int(cos))
-
-        else:
-            models = [None]
-
-        if request.POST.getlist('sexes'):
-            sexes = request.POST.getlist('sexes')
-            # print(sexes)
-        
-        else:
-            sexes = [None]
-
-        if request.POST.getlist('tracks'):
-            shapes = request.POST.getlist('tracks')
-            # print(shapes)
-
-        else:
-            shapes = [None]
-
-        if request.POST.getlist('seats'):
-            no_of_seats = request.POST.getlist('seats')
-            # print(no_of_seats)
-
-        else:
-            no_of_seats = [None]
-
-        models_placeholders = ', '.join(['{}'] * len(models))
-        sexes_placeholders = ', '.join(['\'{}\''] * len(sexes))
-        shapes_placeholders = ', '.join(['{}'] * len(shapes))
-        no_of_seats_placeholders = ', '.join(['{}'] * len(no_of_seats))
-        records = Lap.objects.raw('select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id where km.id in ({}) and t.id in ({}) and km.number_of_seats in ({}) and c.sex in ({})'.format(models_placeholders, shapes_placeholders, no_of_seats_placeholders, sexes_placeholders).format(*models,*shapes,*no_of_seats,*sexes))
-        for i in range(0,len(records)):
-            records[i].time = datetime.datetime.fromtimestamp(records[i].time/1000).strftime('%M:%S.%f')[:-3]
-        return records
-    else:
-        records = Lap.objects.raw('select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id limit 20')
-        for i in range(0,len(records)):
-            records[i].time = datetime.datetime.fromtimestamp(records[i].time/1000).strftime('%M:%S.%f')[:-3]
-        return records
-
-
 
 def plot(request):
     y = []
