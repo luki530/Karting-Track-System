@@ -20,12 +20,13 @@ def home(request):
 
 def records(request):
     times = displayRecords(request)
-    return render(request, 'karting_track_system/records.html', {'models': getModels(models) ,'sexes':getSexes(sexes), 'tracks': getTracks(tracks), 'seats': getSeats(seats), 'times':displayRecords(request)})
+    return render(request, 'karting_track_system/records.html', {'models': getModels(models) ,'sexes':getSexes(sexes), 'tracks': getTracks(tracks), 'seats': getSeats(seats), 'times':displayRecords(request),'range': range(0,len(times))})
 
 def statistics(request):
     if request.method == 'POST' and 'btn1' in request.POST:
         race_numbers = getDate(request)
-        request.session['date'] = str(race_numbers)
+        date = str(race_numbers)
+
         return render(request, 'karting_track_system/statistics.html',{'races':race_numbers})
     elif request.method == 'POST' and 'btn2' in request.POST:
         

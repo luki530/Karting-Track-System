@@ -27,7 +27,7 @@ def displayRaces(request):
     if request.method == 'POST':
         if request.POST.getlist('races'):
             numbers = request.POST.getlist('races')
-            # print(numbers)
+            
         drivers = RaceDrivers.objects.raw('select * from race_drivers rd left join race r on rd.race_id=r.id where r.id = %s', [numbers])
 
         for rd in drivers:
@@ -45,8 +45,6 @@ def displayRaces(request):
             x = [datetime.datetime.fromtimestamp(i.time/1000).strftime('%M:%S.%f')[:-3] for i in times]
             full.append(base + x)
 
-
-
             x_for_plot = [i.time for i in times]
             full_for_plot.append([race_info[0].name, race_info[0].best, race_info[0].worst, race_info[0].mean] + x_for_plot)
         
@@ -54,9 +52,7 @@ def displayRaces(request):
         first_col = ['Name','Best time','Worst time','Mean time'] + lent
         full.insert(0,first_col)
         full_for_plot.insert(0,first_col)
-        # for i in range(1,len(full)):
-        #     print(full[i][4:-1])
-
+       
         return full, full_for_plot
 
 
@@ -71,29 +67,28 @@ def displayRecords(request):
 
         if request.POST.getlist('kart_models'):
             models = request.POST.getlist('kart_models')
-            # print(models)
-            # print(int(cos))
+          
 
         else:
             models = [None]
 
         if request.POST.getlist('sexes'):
             sexes = request.POST.getlist('sexes')
-            # print(sexes)
+           
         
         else:
             sexes = [None]
 
         if request.POST.getlist('tracks'):
             shapes = request.POST.getlist('tracks')
-            # print(shapes)
+            
 
         else:
             shapes = [None]
 
         if request.POST.getlist('seats'):
             no_of_seats = request.POST.getlist('seats')
-            # print(no_of_seats)
+            
 
         else:
             no_of_seats = [None]
@@ -113,7 +108,6 @@ def displayRecords(request):
         return records
 
 
-
 def plot(request):
     y = []
     x = []
@@ -124,9 +118,6 @@ def plot(request):
         x.append([i for i in range(1, len(y[i-1])+1)])
         title.append(axis[i][0])
 
-    # print(x)
-    # print(y)
-    # print(title)
     fig = make_subplots(x_title='Lap number',y_title='Time in milliseconds')
     colors=["#800000", "#FF0000", "#800080", "#FF00FF","#008000", "#00FF00", "#808000","#000080", "#0000FF", "#008080", "#00FFFF"]
     for i in range(0,len(title)):

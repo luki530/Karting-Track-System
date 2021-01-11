@@ -8,6 +8,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -23,9 +28,14 @@
     <!-- Tempus Dominus Bootstrap 4 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'karting_track_system/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'karting_track_system/one-page-wonder.css' %}">
+
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
     
     {% if title %}
         <title>Statistics - {{ title }}</title>
@@ -35,36 +45,44 @@
 </head>
 
 <body>
-    <header class="site-header">
-        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-          <div class="container">
-            <a class="navbar-brand mr-4" href="{% url 'home' %}">Karting Track System</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarToggle">
-              <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="{% url 'statistics' %}"> Statistics </a>
-                <a class="nav-item nav-link" href="{% url 'records' %}"> Records </a>
-              </div>
-              <!-- Navbar Right Side -->
-              <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#">Login</a>
-                <a class="nav-item nav-link" href="#">Register</a>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </header>
-      <main role="main" class="container">
-        <div class="row">
-          <div class="col-md-8">
-            {% block content %}
-            {% endblock %}
-          </div>
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top ">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'home' %}">Karting Track System</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <div class="navbar-nav mr-auto">
+          <a class="nav-item nav-link" href="{% url 'statistics' %}"> Statistics </a>
+          <a class="nav-item nav-link" href="{% url 'records' %}"> Records </a>
         </div>
-      </main>
-    
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Log In</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div>
+    <main class="flex-fill">
+    {% block content %}
+    {% endblock %}
+  </main>
+  </div>
+
+  <!-- Footer -->
+
+  <!-- <footer class="page-footer font-small fixed-bottom bg-dark text-light">
+    <div class="footer-copyright text-center py-2">
+      Copyright &copy; Łukasz Oszczypała & Michał Maczek 2021   
+    </div>
+  </footer>
+     -->
 
      <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -75,77 +93,6 @@
     <sc src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></sc>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
-
-        $("#table1").each(function() {
-                var $this = $(this);
-                var newrows = [];
-                $this.find("tr").each(function(){
-                    var i = 0;
-                    $(this).find("td").each(function(){
-                        i++;
-                        if(newrows[i] === undefined) { newrows[i] = $("<tr></tr>"); }
-                        newrows[i].append($(this));
-                    });
-                });
-                $this.find("tr").remove();
-                $.each(newrows, function(){
-                    $this.append(this);
-                });
-            });
-
-      $(function () {
-        $("#datetimepicker1").datetimepicker({
-          format: 'YYYY-MM-DD',
-        });
-      });
-
-      $(document).ready(function()
-      {
-        $("#tracks").select2({
-          placeholder: 'Select track ...'
-        });
-
-        $("#kart_models").select2({
-          placeholder: 'Select kart model ...'
-        });
-
-        $("#sexes").select2({
-          placeholder: 'Select sex ...'
-        });
-
-        $("#seats").select2({
-          placeholder: 'Select number of seats ...'
-        });
-
-        $("#races").select2({
-          placeholder: 'Select race number ...'
-        });
-
-        $('#form1').on('submit', function(){
-            var minimum = 1;
-
-            if($("#tracks").select2('data').length >= minimum){
-                return true;
-            }else {
-              alert('Please choose at least ' + minimum + ' track')
-                return false;
-            }
-            
-        })
-
-        $('#form2').on('submit', function(){
-            var minimum = 1;
-
-            if($("#races").select2('data').length == minimum){
-                return true;
-            }else {
-              alert('Please choose only ' + minimum + ' race')
-                return false;
-            }
-            
-        })
-        
-      });
     </script>
   </body>
 
