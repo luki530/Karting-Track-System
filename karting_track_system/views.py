@@ -24,7 +24,6 @@ def records(request):
 def statistics(request):
     if request.method == 'POST' and 'btn1' in request.POST:
         race_numbers = getDate(request)
-        request.session['date'] = str(race_numbers)
         return render(request, 'karting_track_system/statistics.html',{'races':race_numbers})
     elif request.method == 'POST' and 'btn2' in request.POST:
         
@@ -33,10 +32,3 @@ def statistics(request):
         return render(request, 'karting_track_system/statistics.html',{'full': full,'range': range(0,len(full)),'plots':plots})
     else:
         return render(request, 'karting_track_system/statistics.html')
-
-# def races(request):
-#     full = displayRaces(request)
-#     return render(request, 'karting_track_system/races.html',{'full': full,'range': range(0,len(full))})
-    
-   
-
