@@ -12,13 +12,13 @@
                         <div class="input-group date" id="datetimepicker1" data-target-input="nearest" >
                             <input name="date" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
                             <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                <div class="input-group-text"><i class="fa fa-calendar" ></i></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-sm-4">
-                        <input id="button" type="submit" name="btn1" value="Choose date of race" class="btn btn-dark"/>
+                        <input id="button" type="submit" name="btn1" value="Choose date of race" style="width: 170px;" class="btn btn-dark"/>
                     </div>
                 </div>
                 
@@ -30,7 +30,7 @@
                     {% csrf_token %}
                     <div class="form-group row">  
                         <div class="col-sm-4">
-                            <select id="races"  name="races" class="custom-select"  multiple>
+                            <select id="races"  name="races" class="form-control" >
                                 {% for race in races %}
                                     <option value={{race.id}}>{{race.number}}</option>
                                 {% endfor %}
@@ -42,13 +42,6 @@
 
                 </form>
 
-                <!-- {% if request.POST.races %}
-                    
-                        <div class="col-sm-4">
-                            <input value="Show plots" onclick="plots()" class="btn btn-dark"/>
-                        </div>
-                    
-                {% endif %} -->
             </div>
             <div class="table-responsive" style=" width: 1200px; ">
                 <table id="table1" class="table table-hover table-curved" style="color:rgba(0, 162, 255, 0.692);"  style="overflow-x: hidden;">
@@ -73,30 +66,31 @@
     </div>
 </main>
 <script>
-    $(document).ready(function()
-        {
-        $("#races").select2({
-                placeholder: 'Select race number ...'
-                });
-            });
+    // $(document).ready(function()
+    //     {
+    //     $("#races").select2({
+    //             placeholder: 'Select race number ...'
+    //             });
+    //         });
 
-    $('#form2').on('submit', function(){
-        var minimum = 1;
+    // $('#form2').on('submit', function(){
+    //     var minimum = 1;
 
-        if($("#races").select2('data').length == minimum){
-            return true;
-        }else {
-            alert('Please choose only ' + minimum + ' race')
-            return false;
-        }
+    //     if($("#races").select2('data').length == minimum){
+    //         return true;
+    //     }else {
+    //         alert('Please choose only ' + minimum + ' race')
+    //         return false;
+    //     }
             
-    })
+    // })
 
 
     $(function () {
             $("#datetimepicker1").datetimepicker({
             format: 'YYYY-MM-DD',
             });
+            $( "#datetimepicker1" ).datetimepicker({showAnim: 'slideDown'} );
         });
     
     $(document).ready(function() {

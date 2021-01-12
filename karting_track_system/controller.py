@@ -122,7 +122,6 @@ def plot(request):
     colors=["#800000", "#FF0000", "#800080", "#FF00FF","#008000", "#00FF00", "#808000","#000080", "#0000FF", "#008080", "#00FFFF"]
     for i in range(0,len(title)):
         fig.add_trace(go.Scatter(x=x[i], y=y[i],mode='lines', name=title[i],opacity=0.8, marker_color=colors[i]))
-  
     # updatemenus=list([
     # dict(
     #     buttons=[],
