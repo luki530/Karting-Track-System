@@ -26,7 +26,6 @@ def records(request):
 def statistics(request):
     if request.method == 'POST' and 'btn1' in request.POST:
         race_numbers = getDate(request)
-        request.session['date'] = str(race_numbers)
         return render(request, 'karting_track_system/statistics.html',{'races':race_numbers})
     elif request.method == 'POST' and 'btn2' in request.POST:
         
@@ -35,24 +34,3 @@ def statistics(request):
         return render(request, 'karting_track_system/statistics.html',{'full': full,'range': range(0,len(full)),'plots':plots})
     else:
         return render(request, 'karting_track_system/statistics.html')
-
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserCreationForm()
-    return render(request, 'karting_track_system/signup.html', {'form': form})
-
-# def races(request):
-#     full = displayRaces(request)
-#     return render(request, 'karting_track_system/races.html',{'full': full,'range': range(0,len(full))})
-    
-   
-
