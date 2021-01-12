@@ -80,6 +80,8 @@ def displayRecords(request):
 
     query+=' order by time limit 20'
     records = Lap.objects.raw(query)
+    for i in range(0,len(records)):
+        records[i].time = datetime.datetime.fromtimestamp(records[i].time/1000).strftime('%M:%S.%f')[:-3]
     return records
  
 def getDate(request):
@@ -103,16 +105,16 @@ def displayRaces(request):
     if request.method == 'POST':
         if request.POST.getlist('races'):
             numbers = request.POST.getlist('races')
-            # print(numbers)
+
         drivers = RaceDrivers.objects.raw('select * from race_drivers rd left join race r on rd.race_id=r.id where r.id = %s', [numbers])
 
         for rd in drivers:
             times = Lap.objects.raw('select l.id, l.end_time-l.start_time as "time" from lap l left join race_drivers rd on l.race_drivers_id=rd.id left join client c on rd.client_id=c.id where l.race_drivers_id = %s order by l.id',[rd.id])
             race_info = RaceDrivers.objects.raw('select rd.id, avg(l.end_time-l.start_time) as "mean", max(l.end_time-l.start_time) as "worst", min(l.end_time-l.start_time) as "best", c.name from race_drivers rd left join lap l on l.race_drivers_id=rd.id left join client c on rd.client_id=c.id where l.race_drivers_id = %s group by rd.id',[rd.id])
-            
+
             if len(times) > temp_lent:
                 temp_lent = len(times)
-            
+
             base = [race_info[0].name, race_info[0].best, race_info[0].worst, round(race_info[0].mean)]
 
             for i in range(1,len(base)):
@@ -121,17 +123,13 @@ def displayRaces(request):
             x = [datetime.datetime.fromtimestamp(i.time/1000).strftime('%M:%S.%f')[:-3] for i in times]
             full.append(base + x)
 
-
-
             x_for_plot = [i.time for i in times]
             full_for_plot.append([race_info[0].name, race_info[0].best, race_info[0].worst, race_info[0].mean] + x_for_plot)
-        
+
         lent = ['#' + str(i) for i in range(1, temp_lent+1)]
         first_col = ['Name','Best time','Worst time','Mean time'] + lent
         full.insert(0,first_col)
         full_for_plot.insert(0,first_col)
-        # for i in range(1,len(full)):
-        #     print(full[i][4:-1])
 
         return full, full_for_plot
 
@@ -144,10 +142,7 @@ def plot(request):
         y.append(axis[i][4:])
         x.append([i for i in range(1, len(y[i-1])+1)])
         title.append(axis[i][0])
-
-    # print(x)
-    # print(y)
-    # print(title)
+    
     fig = make_subplots(x_title='Lap number',y_title='Time in milliseconds')
     colors=["#800000", "#FF0000", "#800080", "#FF00FF","#008000", "#00FF00", "#808000","#000080", "#0000FF", "#008080", "#00FFFF"]
     for i in range(0,len(title)):

@@ -1,4 +1,72 @@
 {% extends "karting_track_system/base.html" %} 
+{% load static %}
 {% block content %} 
-<p>HOME</p>
+<header class="masthead text-center text-white">
+    <div class="masthead-content">
+      <div class="container">
+        <h1 class="masthead-heading mb-0">Karting Track System</h1>
+        <h2 class="masthead-subheading mb-0">Seat your belt and hit the gas</h2>
+        <a href="https://github.com/luki530/Karting-Track-System" target="_blank" class="btn btn-primary btn-xl rounded-pill mt-5">Learn More</a>
+      </div>
+    </div>
+    <div class="bg-circle-1 bg-circle"></div>
+    <div class="bg-circle-2 bg-circle"></div>
+    <div class="bg-circle-3 bg-circle"></div>
+    <div class="bg-circle-4 bg-circle"></div>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2">
+          <div class="p-5">
+            <img class="img-fluid rounded-circle" src="{% static 'karting_track_system/img/01.jpg' %}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+          <div class="p-5">
+            <h2 class="display-4">For those who wants to drive...</h2>
+            <p>Want to drive a kart? Come to us and we will give you a chance!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="p-5">
+            <img class="img-fluid rounded-circle" src="{% static 'karting_track_system/img/02.jpg' %}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="p-5">
+            <h2 class="display-4">Insight in statistics...</h2>
+            <p>View statistics of races. Compare your time with the others.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2">
+          <div class="p-5">
+            <img class="img-fluid rounded-circle" src="{% static 'karting_track_system/img/03.jpg' %}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+          <div class="p-5">
+            <h2 class="display-4">Check records! </h2>
+            <p>You have possibility to filter through everything you want! Sex, model, track and more!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 {% endblock content %}
