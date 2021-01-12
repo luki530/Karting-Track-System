@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db import connection
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 from karting_track_system.models import *
 from karting_track_system.repository import *
 from karting_track_system.controller import *

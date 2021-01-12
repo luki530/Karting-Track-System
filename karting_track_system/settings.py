@@ -56,7 +56,7 @@ ROOT_URLCONF = 'karting_track_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,6 +127,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = '/public_html/'
+
 
 # STATICFILES_DIRS = [
 #    BASE_DIR / "public_html",
