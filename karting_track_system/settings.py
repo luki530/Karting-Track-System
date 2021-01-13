@@ -31,14 +31,14 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'karting_track_system',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'karting_track_system',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -86,6 +86,14 @@ DATABASES = {
     }
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND  
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_HOST_PASSWORD = 'kartingtracksystem#123'  
+EMAIL_HOST_USER = 'kartingtracksystem@gmail.com'  
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True  
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -123,13 +131,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-#STATIC_URL = '/public_html/'
-STATIC_URL = '/static/'
+STATIC_URL = '/public_html/'
+# STATIC_URL = '/static/'
 
-STATIC_ROOT = '/public_html/'
+# STATIC_ROOT = '/public_html/'
 
 
-# STATICFILES_DIRS = [
-#    BASE_DIR / "public_html",
-#    '/public_html',
-# ]
+STATICFILES_DIRS = [
+   BASE_DIR / "public_html",
+   '/public_html',
+]
+
+
+LOGIN_REDIRECT_URL = '/'

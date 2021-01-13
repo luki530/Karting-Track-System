@@ -7,6 +7,8 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Client(models.Model):
@@ -19,6 +21,12 @@ class Client(models.Model):
     class Meta:
         managed = False
         db_table = 'client'
+
+@receiver(post_save, sender=User)
+def create_or_update_client(sender, instance, created, **kwargs):
+    if created:
+        Client.objects.create(user=instance)
+    instance.client.save()
 
 
 class Kart(models.Model):
