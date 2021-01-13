@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin, auth
 from django.contrib.auth import views as auth_views
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from karting_track_system import views
 
 urlpatterns = [
@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('records/', views.records, name = 'records'),
     path('statistics/', views.statistics, name = 'statistics'),
-    path('login', auth_views.LoginView.as_view(), name = 'login'),
-    path('password_reset', auth_views.PasswordResetView.as_view(), name='password_reset')
+    path('', include('django.contrib.auth.urls')),
+    path('signup/', views.signup, name="signup"),
+    path('activate/<uidb64>/<token>/',views.activate, name='activate')
 ]
