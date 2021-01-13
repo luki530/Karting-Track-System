@@ -1,8 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from karting_track_system.models import *
 
-from .models import Client
+models = [Client, Kart, KartModel, Track, Race, RaceDrivers, Lap]
+for m in models:
+    admin.site.register(m)
 
 class ClientInline(admin.StackedInline):
     model = Client
