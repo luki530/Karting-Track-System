@@ -221,3 +221,17 @@ body {
 .shadow-none {
     box-shadow: none!important;
 }
+
+ul, li {
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.listWrapper {
+  max-height:180px;
+  overflow-y:auto;
+}
+
+.form-gap {
+  align-content: center;
+}

@@ -42,6 +42,12 @@ def statistics(request):
         plots = plot(request)
         full, _ = displayRaces(request)
         return render(request, 'karting_track_system/statistics.html', {'full': full, 'range': range(0, len(full)), 'plots': plots})
+    
+    elif request.method == 'POST' and 'btn3' in request.POST:
+
+        plots = plot(request)
+        full, _ = displayRaces(request)
+        return render(request, 'karting_track_system/user_race.html', {'full': full, 'range': range(0, len(full)), 'plots': plots})
     else:
         return render(request, 'karting_track_system/statistics.html')
 
@@ -56,5 +62,13 @@ def signup(request):
 
 def activate(request, uidb64, token):
     return activate_user(request, uidb64, token)
+
 def userProfile(request):
-    return render(request, 'karting_track_system/userprofile.html')
+    races = getRaces(request)
+    return render(request, 'karting_track_system/userprofile.html', {'races':races})
+
+def changePassword(request):
+    return render(request,'registration/password_change_form.html' )
+
+# def userRace(request):
+#     return render(request,'karting_track_system/user_race.html')
