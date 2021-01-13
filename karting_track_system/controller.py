@@ -107,7 +107,6 @@ def getDate(request):
 
         dates = Race.objects.raw(
             'select id, date, number from race where date = %s', tuple(date))
-        print(dates)
         return dates
 
 
@@ -123,13 +122,13 @@ def displayRaces(request):
             numbers = request.POST.getlist('races')
 
         drivers = RaceDrivers.objects.raw(
-            'select * from race_drivers rd left join race r on rd.race_id=r.id where r.id = %s', [numbers])
+            'select * from race_drivers rd inner join race r on rd.race_id=r.id where r.id = %s', [numbers])
 
         for rd in drivers:
             times = Lap.objects.raw(
-                'select l.id, l.end_time-l.start_time as "time" from lap l left join race_drivers rd on l.race_drivers_id=rd.id left join client c on rd.client_id=c.id where l.race_drivers_id = %s order by l.id', [rd.id])
+                'select l.id, l.end_time-l.start_time as "time" from lap l inner join race_drivers rd on l.race_drivers_id=rd.id inner join client c on rd.client_id=c.id where l.race_drivers_id = %s order by l.id', [rd.id])
             race_info = RaceDrivers.objects.raw(
-                'select rd.id, avg(l.end_time-l.start_time) as "mean", max(l.end_time-l.start_time) as "worst", min(l.end_time-l.start_time) as "best", c.name from race_drivers rd left join lap l on l.race_drivers_id=rd.id left join client c on rd.client_id=c.id where l.race_drivers_id = %s group by rd.id', [rd.id])
+                'select rd.id, avg(l.end_time-l.start_time) as "mean", max(l.end_time-l.start_time) as "worst", min(l.end_time-l.start_time) as "best", c.name from race_drivers rd inner join lap l on l.race_drivers_id=rd.id inner join client c on rd.client_id=c.id where l.race_drivers_id = %s group by rd.id', [rd.id])
 
             if len(times) > temp_lent:
                 temp_lent = len(times)
@@ -174,37 +173,37 @@ def plot(request):
         fig.add_trace(go.Scatter(
             x=x[i], y=y[i], mode='lines', name=title[i], opacity=0.8, marker_color=colors[i]))
 
-    # updatemenus=list([
-    # dict(
-    #     buttons=[],
-    #     direction = 'down',
-    #     pad = {'r': 10, 't': 10},
-    #     showactive = True,
-    #     x = 0,
-    #     xanchor = 'left',
-    #     y = 1.2,
-    #     yanchor = 'top'
-    #     ),
-    # ])
+    updatemenus=list([
+    dict(
+        buttons=[],
+        direction = 'down',
+        pad = {'r': 10, 't': 10},
+        showactive = True,
+        x = 0,
+        xanchor = 'left',
+        y = 1.2,
+        yanchor = 'top'
+        ),
+    ])
 
-    # lister = []
-    # for k in range(0,len(title)):
-    #     lister.append(dict(
-    #         args=['visible', [True for k in range(0,len(title))] if k == 0 else [True if (i+1) == k else False for i in range(0,len(title))]],
-    #         label=str( 'All' if k == 0 else title[k]),
-    #         method='restyle'
-    #     ))
+    lister = []
+    for k in range(0,len(title)):
+        lister.append(dict(
+            args=['visible', [True for k in range(0,len(title))] if k == 0 else [True if (i+1) == k else False for i in range(0,len(title))]],
+            label=str( 'All' if k == 0 else title[k]),
+            method='restyle'
+        ))
 
-    # updatemenus[0]['buttons'] = lister
+    updatemenus[0]['buttons'] = lister
 
-    # fig['layout']['updatemenus'] = updatemenus
+    fig['layout']['updatemenus'] = updatemenus
 
     return fig.to_html(full_html=False, include_plotlyjs='cdn', default_height=800, default_width=1200)
 
 
 def register(request):
     form = SignUpForm(request.POST)
-    # print(form.errors.as_data())
+    print(form.errors.as_data())
     if form.is_valid():
         user = form.save(commit=False)
         user.is_active = False
@@ -241,3 +240,11 @@ def activate_user(request, uidb64, token):
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
+
+
+# def getUserRace(request):
+#     if request.method == 'POST':
+#         if request.POST.getlist('urace'):
+#             id = request.POST.getlist('urace')
+
+#             race = 

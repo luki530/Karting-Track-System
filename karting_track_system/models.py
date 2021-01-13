@@ -18,6 +18,7 @@ class Client(models.Model):
     email = models.CharField(max_length=45)
     client_number = models.CharField(max_length=45)
     sex = models.CharField(max_length=1)
+    phone_number = models.CharField(max_length=45)
 
     class Meta:
         managed = False
