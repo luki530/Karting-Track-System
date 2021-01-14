@@ -10,10 +10,12 @@ from karting_track_system.controller import *
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
+from datetime import date
 
 from .forms import SignUpForm
 
@@ -24,6 +26,8 @@ sexes = []
 times = []
 tracks = []
 seats = []
+
+ongoing_race_id = -1
 
 
 def home(request):
@@ -43,7 +47,7 @@ def statistics(request):
         plots = plot(request)
         full, _ = displayRaces(request)
         return render(request, 'karting_track_system/statistics.html', {'full': full, 'range': range(0, len(full)), 'plots': plots})
-    
+
     elif request.method == 'POST' and 'btn3' in request.POST:
 
         plots = plot(request)
@@ -51,6 +55,7 @@ def statistics(request):
         return render(request, 'karting_track_system/user_race.html', {'full': full, 'range': range(0, len(full)), 'plots': plots})
     else:
         return render(request, 'karting_track_system/statistics.html')
+
 
 def signup(request):
     if request.method == 'GET':
@@ -61,12 +66,33 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+
 def activate(request, uidb64, token):
     return activate_user(request, uidb64, token)
+
 
 @login_required
 def userProfile(request):
     races = getRaces(request)
-    return render(request, 'karting_track_system/userprofile.html', {'races':races})
+    return render(request, 'karting_track_system/userprofile.html', {'races': races})
 
 
+@staff_member_required
+def control_races(request):
+    global ongoing_race_id
+    today = date.today()
+    races = Race.objects.raw(
+        'select * from race r where r.date=%s', [today])
+    if request.method == 'GET':
+        if not ongoing_race_id == -1:
+            return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race': next(r for r in races if r.id == ongoing_race_id)})
+        return render(request, 'karting_track_system/control_races.html', {'races': races})
+    elif request.method == 'POST' and 'btn_start' in request:
+        race_id = request.get('race_id')
+        ongoing_race_id = race_id
+        return HttpResponse('gitara')
+    elif request.method == 'POST' and 'btn_stop' in request:
+        race_id = request.get('race_id')
+        Race.objects.filter(id=race_id).update(finished=1)
+        ongoing_race_id = -1
+        return HttpResponse('gitara')

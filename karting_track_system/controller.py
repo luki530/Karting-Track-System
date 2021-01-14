@@ -252,4 +252,7 @@ def activate_user(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
+
+
+
       
