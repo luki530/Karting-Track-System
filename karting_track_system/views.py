@@ -67,6 +67,4 @@ def userProfile(request):
     races = getRaces(request)
     return render(request, 'karting_track_system/userprofile.html', {'races':races})
 
-def changePassword(request):
-    return render(request,'registration/password_change_form.html' )
 
