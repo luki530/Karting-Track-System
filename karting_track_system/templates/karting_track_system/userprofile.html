@@ -21,8 +21,14 @@
                   <div class="d-flex flex-column align-items-center text-center">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/User_font_awesome.svg" alt="User" class="rounded-circle" width="150">
                     <div class="mt-3">
-                      <h4>My Name</h4>
+                      <h4>{{ user.username }}</h4>
                     </div>
+                      <form method="POST" action="{% url 'changepassword' %}">
+                        {% csrf_token %}
+                        <div class="mt-3">
+                          <input type="submit" value="Change password" style="width: 170px;" class="btn btn-dark"/>
+                        </div>
+                      </form>
                   </div>
                 </div>
               </div>
@@ -59,7 +65,7 @@
                       <h6 class="mb-0">Full Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      
+                      {{ user.client.name }}
                     </div>
                   </div>
                   <hr>
@@ -67,8 +73,8 @@
                     <div class="col-sm-3">
                       <h6 class="mb-0">Email</h6>
                     </div>
+                    {{ user.client.email }}
                     <div class="col-sm-9 text-secondary">
-                      
                     </div>
                   </div>
                   <hr>
@@ -77,24 +83,25 @@
                       <h6 class="mb-0">Client Number</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
+                      {{ user.client.client_number }}
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
                       <h6 class="mb-0">Sex</h6>
-                    </div>
+                    </div>   
                     <div class="col-sm-9 text-secondary">
-                      
+                      {{ user.client.sex }}
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
                       <h6 class="mb-0">Phone Number</h6>
-                    </div>
+                    </div> 
                     <div class="col-sm-9 text-secondary">
-                      
+                      {{ user.client.phone_number }}
                     </div>
                   </div>
                 </div>
@@ -109,8 +116,21 @@
                 </div>
                 <div class="col-sm-6 mb-3">
                   <div class="card h-100">
-                    <div class="card-body">
+                    <div class="card-body" >
                       <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>My races</h6>
+                        <div class="card-body listWrapper" style="height:200px;">
+                            <ul> 
+                              {% for race in races %}
+                                <form method="POST" action="{% url 'statistics' %}" target="_blank">
+                                {% csrf_token %}
+                                  
+                                  <li>&nbsp;&nbsp;<input id="button" name="btn3" type="submit" value="Race: {{race.number}}, Date: {{race.date}}" class="btn btn-outline-dark" style="margin-bottom: 3px; width: 235px !important"/>
+                                  <input type="hidden" name="races" value="{{ race.id }}" /></li>
+                                
+                                </form>
+                              {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                   </div>
                 </div>

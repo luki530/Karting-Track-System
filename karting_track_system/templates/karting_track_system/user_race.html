@@ -1,0 +1,58 @@
+{% extends "karting_track_system/base.html" %}
+
+{% block content %}
+
+<main role="main" class="container">
+    <div class="form-group row"></div>
+        <div class="col-md-8">
+
+            <div class="table-responsive" style=" width: 1200px; ">
+                <table id="table1" class="table table-hover table-curved" style="color:rgba(0, 162, 255, 0.692);"  style="overflow-x: hidden;">
+                    <tbody>
+                        {% for x in full %}
+                            <tr>
+                                {% for i in x %}
+                                    <td >{{i}}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+                
+                    {{ plots|safe }}
+
+
+        </div>
+    </div>
+</main>
+<script>
+    $(function () {
+            $("#datetimepicker1").datetimepicker({
+            format: 'YYYY-MM-DD',
+            });
+            $( "#datetimepicker1" ).datetimepicker({showAnim: 'slideDown'} );
+        });
+    
+    $(document).ready(function() {
+        $('#table1').DataTable();
+    });
+    // $("#table1").each(function() {
+    //             var $this = $(this);
+    //             var newrows = [];
+    //             $this.find("tr").each(function(){
+    //                 var i = 0;
+    //                 $(this).find("td").each(function(){
+    //                     i++;
+    //                     if(newrows[i] === undefined) { newrows[i] = $("<tr></tr>"); }
+    //                     newrows[i].append($(this));
+    //                 });
+    //             });
+    //             $this.find("tr").remove();
+    //             $.each(newrows, function(){
+    //                 $this.append(this);
+    //             });
+    //         });
+            
+</script>
+{% endblock content %}
