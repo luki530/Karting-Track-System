@@ -45,6 +45,7 @@ def statistics(request):
     else:
         return render(request, 'karting_track_system/statistics.html')
 
+
 def signup(request):
     if request.method == 'GET':
         return render(request, 'registration/signup.html')
@@ -54,7 +55,10 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+
 def activate(request, uidb64, token):
     return activate_user(request, uidb64, token)
+
+
 def userProfile(request):
     return render(request, 'karting_track_system/userprofile.html')

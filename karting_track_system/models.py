@@ -25,8 +25,6 @@ class Client(models.Model):
 
 @receiver(post_save, sender=User)
 def create_or_update_client(sender, instance, created, **kwargs):
-    if created:
-        Client.objects.create(user=instance)
     instance.client.save()
 
 
