@@ -9,6 +9,7 @@ from karting_track_system.controller import *
 
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.decorators import login_required
 
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -63,6 +64,7 @@ def signup(request):
 def activate(request, uidb64, token):
     return activate_user(request, uidb64, token)
 
+@login_required
 def userProfile(request):
     races = getRaces(request)
     return render(request, 'karting_track_system/userprofile.html', {'races':races})
