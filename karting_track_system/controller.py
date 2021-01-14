@@ -206,12 +206,21 @@ def register(request):
     print(form.errors.as_data())
     if form.is_valid():
         user = form.save(commit=False)
+        to_email = form.cleaned_data.get('email')
         user.is_active = False
-        client_email = Client.objects.raw(
+        clients = Client.objects.raw(
             'select * from client c where c.email=%s', [user.email])
-        if client_email:
-            return HttpResponseBadRequest('Email is already taken')
+        if clients:
+            client = clients[0]
+            client.user = user
+            user.client = client
+        else:
+            user.client=Client(user=user, email=to_email)     
+
         user.save()
+            
+        
+
         current_site = get_current_site(request)
         mail_subject = 'Activate your account.'
         message = render_to_string('registration/activate_email.html', {
@@ -220,12 +229,14 @@ def register(request):
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': default_token_generator.make_token(user),
         })
-        to_email = form.cleaned_data.get('email')
+        
         email = EmailMessage(mail_subject, message, to=[to_email])
+        print('test')
         email.send()
+        
         return HttpResponse('Please confirm your email address to complete the registration')
     else:
-        return HttpResponseBadRequest('Bad request')
+        return HttpResponseBadRequest('Bad request - username or email already taken')
 
 
 def activate_user(request, uidb64, token):
