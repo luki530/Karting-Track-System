@@ -70,5 +70,3 @@ def userProfile(request):
 def changePassword(request):
     return render(request,'registration/password_change_form.html' )
 
-# def userRace(request):
-#     return render(request,'karting_track_system/user_race.html')

@@ -27,7 +27,7 @@ def displayRecords(request):
     no_of_seats = []
 
     first = True
-    query = 'select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id'
+    query = 'select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats, c.name from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id'
 
     if request.method == 'POST':
 
@@ -241,10 +241,4 @@ def activate_user(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
-
-# def getUserRace(request):
-#     if request.method == 'POST':
-#         if request.POST.getlist('urace'):
-#             id = request.POST.getlist('urace')
-
-#             race = 
+      
