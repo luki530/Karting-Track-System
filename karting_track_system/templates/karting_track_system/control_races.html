@@ -1,0 +1,24 @@
+{% extends "karting_track_system/base.html" %}
+{% block content %}
+<div class="col-sm-6 mb-3">
+    <div class="card h-100">
+      <div class="card-body" >
+        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>My races</h6>
+          <div class="card-body listWrapper" style="height:200px;">
+              <ul> 
+                {% for race in races %}
+                  <form method="POST" action="{% url 'statistics' %}" target="_blank">
+                  {% csrf_token %}
+                    
+                    <li>&nbsp;&nbsp;<input id="button" name="btn3" type="submit" value="Race: {{race.number}}, Date: {{race.date}}" class="btn btn-outline-dark" style="margin-bottom: 3px; width: 235px !important"/>
+                    <input type="hidden" name="races" value="{{ race.id }}" /></li>
+                  
+                  </form>
+                {% endfor %}
+              </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}

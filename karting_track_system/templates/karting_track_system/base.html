@@ -75,6 +75,9 @@
         <div class="navbar-nav mr-auto">
           <a class="nav-item nav-link" href="{% url 'statistics' %}"> Statistics </a>
           <a class="nav-item nav-link" href="{% url 'records' %}"> Records </a>
+          {% if user.is_staff %}
+            <a class="nav-item nav-link" href="{% url 'control_races' %}"> Control Races </a>
+          {% endif %}
         </div>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
@@ -85,6 +88,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
               </li>
+              
             {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
