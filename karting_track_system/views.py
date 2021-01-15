@@ -30,7 +30,7 @@ seats = []
 
 ongoing_race_id = -1
 current_track = 1
-
+ongoing_race = None
 
 def home(request):
     return render(request, 'karting_track_system/home.html')
@@ -82,22 +82,25 @@ def userProfile(request):
 @staff_member_required
 def control_races(request):
     global ongoing_race_id
+    global ongoing_race
     today = date.today()
     races = Race.objects.raw(
         'select * from race r where r.date=%s', [today])
     if request.method == 'GET':
         if not ongoing_race_id == -1:
-            return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race': next(r for r in races if r.id == ongoing_race_id)})
-        return render(request, 'karting_track_system/control_races.html', {'races': races})
-    elif request.method == 'POST' and 'btn_start' in request:
-        race_id = request.get('race_id')
-        ongoing_race_id = race_id
-        return HttpResponse('gitara')
-    elif request.method == 'POST' and 'btn_stop' in request:
-        race_id = request.get('race_id')
+            return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id)})
+        return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id)})
+
+    elif request.method == 'POST' and 'btn_start' in request.POST:
+        race_id = request.POST.get('race_id')
+        ongoing_race_id = int(race_id)
+        return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id)})
+
+    elif request.method == 'POST' and 'btn_stop' in request.POST:
+        race_id = request.POST.get('race_id')
         Race.objects.filter(id=race_id).update(finished=1)
         ongoing_race_id = -1
-        return HttpResponse('gitara')
+        return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id)})
 
 
 @csrf_exempt
