@@ -26,7 +26,7 @@ WEBHOOK_ENDPOINT = settings.WEBHOOK_ENDPOINT
 
 
 urlpatterns = [
-    path('',views.home, name = 'home'),
+    path('home/',views.home, name = 'home'),
     path('admin/', admin.site.urls),
     path('records/', views.records, name = 'records'),
     path('statistics/', views.statistics, name = 'statistics'),
@@ -36,5 +36,5 @@ urlpatterns = [
     path('userprofile/', views.userProfile, name = 'userprofile'),
     path('control_races/', views.control_races, name= 'control_races'),
     re_path(r'^' + str(WEBHOOK_ENDPOINT) + '/$', FacebookWebhookView.as_view(), name='webhook'),
-    path('policy/',views.policy, name = 'policy'),
+    path('policy/',views.policy, name = 'policy')
 ]
