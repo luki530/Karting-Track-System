@@ -55,6 +55,7 @@ class Lap(models.Model):
     race_drivers = models.ForeignKey('RaceDrivers', models.DO_NOTHING)
     time = models.IntegerField(blank=True, null=True)
 
+
     class Meta:
         managed = False
         db_table = 'lap'

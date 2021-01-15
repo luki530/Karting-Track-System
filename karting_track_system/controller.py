@@ -27,7 +27,7 @@ def displayRecords(request):
     no_of_seats = []
 
     first = True
-    query = 'select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats, c.name from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id =c.id'
+    query = 'select l.id, l.end_time-l.start_time as "time", t.shape, km.model, c.sex, km.number_of_seats, c.name from lap l left join track t on l.track_id=t.id left join race_drivers rd on l.race_drivers_id=rd.id left join kart k on rd.kart_id = k.id left join kart_model km on k.kart_model_id=km.id left join client c on rd.client_id = c.id'
 
     if request.method == 'POST':
 
@@ -90,11 +90,12 @@ def displayRecords(request):
                 print('RAISE EXCEPTION')
             query += ')'
 
-    query += ' order by time limit 20'
+    query += ' and l.end_time is not null order by time limit 20'
     records = Lap.objects.raw(query)
-    for i in range(0, len(records)):
-        records[i].time = datetime.datetime.fromtimestamp(
-            records[i].time/1000).strftime('%M:%S.%f')[:-3]
+    
+    for i in range(0,len(records)):
+        print(records[i].time)
+        records[i].time = datetime.datetime.fromtimestamp(records[i].time/1000).strftime('%M:%S.%f')[:-3]
     return records
 
 
