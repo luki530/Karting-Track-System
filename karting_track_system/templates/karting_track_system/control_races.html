@@ -19,8 +19,7 @@
                                             
                                         {% else %} 
                                                 
-                                            <li>&nbsp;&nbsp;<input name="btn3" value="Race: {{race.number}}, Date: {{race.date}}" class="btn btn-outline-dark some_btn" style="margin-bottom: 3px; width: 235px !important"/>
-                                            
+                                            <li>&nbsp;&nbsp;<input name="btn3"  id="btm3" type = "submit" value="Race: {{race.number}}, Date: {{race.date}}" class="btn btn-outline-dark some_btn" style="margin-bottom: 3px; width: 235px !important" formtarget="_blank"/>
                                         {% endif %}
                                         
                                         {% if ongoing_race_id == -1 and not race.finished %}
@@ -33,7 +32,7 @@
                                             
                                         {% endif %}
 
-                                            <input type="hidden" name="race_id" value="{{ race.id }}" /></li>
+                                            <input type="hidden" name="races" value="{{ race.id }}" /></li>
                                         
                                 </form>
                             {% endfor %}

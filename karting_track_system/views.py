@@ -32,6 +32,7 @@ ongoing_race_id = -1
 current_track = 1
 ongoing_race = None
 
+
 def home(request):
     return render(request, 'karting_track_system/home.html')
 
@@ -41,6 +42,7 @@ def records(request):
 
 
 def statistics(request):
+
     if request.method == 'POST' and 'btn1' in request.POST:
         race_numbers = getDate(request)
         return render(request, 'karting_track_system/statistics.html', {'races': race_numbers})
@@ -92,15 +94,17 @@ def control_races(request):
         return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id)})
 
     elif request.method == 'POST' and 'btn_start' in request.POST:
-        race_id = request.POST.get('race_id')
+        race_id = request.POST.get('races')
         ongoing_race_id = int(race_id)
         return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id)})
 
     elif request.method == 'POST' and 'btn_stop' in request.POST:
-        race_id = request.POST.get('race_id')
+        race_id = request.POST.get('races')
         Race.objects.filter(id=race_id).update(finished=1)
         ongoing_race_id = -1
         return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id)})
+    elif request.method == 'POST' and 'btn3' in request.POST:
+        return statistics(request)
 
 
 @csrf_exempt
