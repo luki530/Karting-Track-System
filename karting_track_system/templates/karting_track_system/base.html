@@ -65,6 +65,30 @@
 </head>
 
 <body>
+  <!-- Load Facebook SDK for JavaScript -->
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        xfbml            : true,
+        version          : 'v9.0'
+      });
+    };
+
+    (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+  <!-- Your Chat Plugin code -->
+  <div class="fb-customerchat"
+    attribution=setup_tool
+    page_id="105848434820754">
+  </div>
+  
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top ">
     <div class="container">
       <a class="navbar-brand" href="{% url 'home' %}">Karting Track System</a>
@@ -75,6 +99,9 @@
         <div class="navbar-nav mr-auto">
           <a class="nav-item nav-link" href="{% url 'statistics' %}"> Statistics </a>
           <a class="nav-item nav-link" href="{% url 'records' %}"> Records </a>
+          {% if user.is_staff %}
+            <a class="nav-item nav-link" href="{% url 'control_races' %}"> Control Races </a>
+          {% endif %}
         </div>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
@@ -85,6 +112,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
               </li>
+              
             {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
@@ -107,7 +135,7 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
     integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
     crossorigin="anonymous"></script>

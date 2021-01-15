@@ -55,6 +55,7 @@ class Lap(models.Model):
     race_drivers = models.ForeignKey('RaceDrivers', models.DO_NOTHING)
     time = models.IntegerField(blank=True, null=True)
 
+
     class Meta:
         managed = False
         db_table = 'lap'
@@ -63,6 +64,7 @@ class Lap(models.Model):
 class Race(models.Model):
     date = models.DateField()
     number = models.IntegerField()
+    finished = models.BooleanField()
 
     class Meta:
         managed = False

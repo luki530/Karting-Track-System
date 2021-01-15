@@ -233,6 +233,10 @@ ul, li {
   max-height:180px;
   overflow-y:auto;
 }
+.listWrapper1 {
+  max-height:500px;
+  overflow-y:auto;
+}
 
 .form-gap {
   align-content: center;

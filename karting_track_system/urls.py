@@ -17,14 +17,24 @@ from django.contrib import admin, auth
 from django.contrib.auth import views as auth_views
 from django.urls import path, re_path, include
 from karting_track_system import views
+from django.conf import settings
+from .views import (
+    FacebookWebhookView,
+    )
+
+WEBHOOK_ENDPOINT = settings.WEBHOOK_ENDPOINT
+
 
 urlpatterns = [
-    path('',views.home, name = 'home'),
+    path('home/',views.home, name = 'home'),
     path('admin/', admin.site.urls),
     path('records/', views.records, name = 'records'),
     path('statistics/', views.statistics, name = 'statistics'),
     path('', include('django.contrib.auth.urls')),
     path('signup/', views.signup, name="signup"),
     path('activate/<uidb64>/<token>/',views.activate, name='activate'),
-    path('userprofile/', views.userProfile, name = 'userprofile')
+    path('userprofile/', views.userProfile, name = 'userprofile'),
+    path('control_races/', views.control_races, name= 'control_races'),
+    re_path(r'^' + str(WEBHOOK_ENDPOINT) + '/$', FacebookWebhookView.as_view(), name='webhook'),
+    path('',views.policy, name = 'policy'),
 ]
