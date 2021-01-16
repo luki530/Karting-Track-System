@@ -2,46 +2,67 @@
 {% block content %}
 <main role="main" class="container">
     <div class="form-group row"></div>
-        <div class="col-md-12">
-                <div class="card h-100">
-                <div class="card-body" >
-                    <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">drive_eta</i>Today's races</h6>
-                    <div class="card-body listWrapper1">
-                        <ul> 
-                            
-                            {% for race in races %}
-                                <form method="POST" action="{% url 'control_races' %}">
-                                    {% csrf_token %}
+    <div class="col-md-12">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">drive_eta</i>Today's
+                    races</h6>
+                <div class="card-body listWrapper1">
+                    <ul>
+                        <form method="POST" action="{% url 'change_track' %}">
+                            {% csrf_token %}
+                            <select id='new_track' name='new_track'>
+                                {% for track in tracks %}
+                                {% if track.id is current_track %}
+                                <option value={{track.id}} selected>{{track.shape}}</option>
+                                {% else %}
+                                <option value={{track.id}}>{{track.shape}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </form>
 
-                                        {% if not race.finished %}
-                                                
-                                            <li>&nbsp;&nbsp;<input value="Race: {{race.number}}, Date: {{race.date}}" class="btn btn-outline-dark some_btn" disabled style="margin-bottom: 3px; width: 235px !important"/>
-                                            
-                                        {% else %} 
-                                                
-                                            <li>&nbsp;&nbsp;<input name="btn3"  id="btm3" type = "submit" value="Race: {{race.number}}, Date: {{race.date}}" class="btn btn-outline-dark some_btn" style="margin-bottom: 3px; width: 235px !important" formtarget="_blank"/>
-                                        {% endif %}
-                                        
-                                        {% if ongoing_race_id == -1 and not race.finished %}
-                                            
-                                            <input id="btn_start" name="btn_start" type="submit" value="Start" class="btn btn-outline-dark some_btn" style="margin-bottom: 3px; width: 235px !important"/>
-                                            
-                                        {% elif ongoing_race_id != -1 and race.id == ongoing_race_id %}
-                                            
-                                            <input id="btn_stop" name="btn_stop" type="submit" value="End" class="btn btn-outline-dark some_btn" style="margin-bottom: 3px; width: 235px !important"/>
-                                            
-                                        {% endif %}
+                        {% for race in races %}
+                        <form method="POST" action="{% url 'control_races' %}">
+                            {% csrf_token %}
+                            {% if not race.finished %}
+                            <li>&nbsp;&nbsp;<input value="Race: {{race.number}}, Date: {{race.date}}"
+                                    class="btn btn-outline-dark some_btn" disabled
+                                    style="margin-bottom: 3px; width: 235px !important" />
 
-                                            <input type="hidden" name="races" value="{{ race.id }}" /></li>
-                                        
-                                </form>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                                {% else %}
+
+                            <li>&nbsp;&nbsp;<input name="btn3" id="btm3" type="submit"
+                                    value="Race: {{race.number}}, Date: {{race.date}}"
+                                    class="btn btn-outline-dark some_btn"
+                                    style="margin-bottom: 3px; width: 235px !important" formtarget="_blank" />
+                                {% endif %}
+
+                                {% if ongoing_race_id == -1 and not race.finished %}
+
+                                <input id="btn_start" name="btn_start" type="submit" value="Start"
+                                    class="btn btn-outline-dark some_btn"
+                                    style="margin-bottom: 3px; width: 235px !important" />
+
+                                {% elif ongoing_race_id != -1 and race.id == ongoing_race_id %}
+
+                                <input id="btn_stop" name="btn_stop" type="submit" value="End"
+                                    class="btn btn-outline-dark some_btn"
+                                    style="margin-bottom: 3px; width: 235px !important" />
+
+                                {% endif %}
+
+                                <input type="hidden" name="races" value="{{ race.id }}" />
+                            </li>
+
+                        </form>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
-        </div>
+    </div>
+    </div>
 </main>
 
 {% endblock content %}
