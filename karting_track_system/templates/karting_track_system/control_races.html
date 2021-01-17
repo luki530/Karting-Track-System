@@ -9,7 +9,7 @@
                     races</h6>
                 <div class="card-body listWrapper1">
                     <ul>
-                        <form method="POST" action="{% url 'change_track' %}">
+                        <form method="POST" id="track" action="{% url 'change_track' %}">
                             {% csrf_token %}
                             <select id='new_track' name='new_track'>
                                 {% for track in tracks %}
@@ -64,5 +64,25 @@
     </div>
     </div>
 </main>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#track").submit(function () { // On form submit event
+            $.ajax({ // create an AJAX call...
+                data: $(this).serialize(), // get the form data
+                type: $(this).attr('method'), // GET or POST
+                url: $(this).attr('action'), // the file to call
+                success: function (response) { // on success..
+                    // $('#success_div').html(response); // update the DIV
+                },
+                error: function (e, x, r) { // on error..
+                    // $('#error_div').html(e); // update the DIV
+                }
+            });
+            return false;
+        });
+        $('#new_track').on("change", function (e) {
+            $("#track").submit();
+        });
+    });
+</script>
 {% endblock content %}

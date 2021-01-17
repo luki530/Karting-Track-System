@@ -39,7 +39,7 @@ tracks = []
 seats = []
 
 ongoing_race_id = -1
-current_track = 1
+current_track = 3
 ongoing_race = None
 
 
@@ -124,7 +124,7 @@ def change_track(request):
     global current_track
     if request.method == 'POST':
         new_track = request.POST.get('new_track')
-        current_track=new_track
+        current_track=int(new_track)
         return HttpResponse('gitara')
 
 @csrf_exempt
