@@ -208,15 +208,7 @@ def register(request):
     if form.is_valid():
         user = form.save(commit=False)
         to_email = form.cleaned_data.get('email')
-        user.is_active = False
-        clients = Client.objects.raw(
-            'select * from client c where c.email=%s', [user.email])
-        if clients:
-            client = clients[0]
-            client.user = user
-            user.client = client
-        else:
-            user.client=Client(user=user, email=to_email)     
+        user.is_active = False   
 
         user.save()
             
