@@ -37,5 +37,6 @@ urlpatterns = [
     path('control_races/', views.control_races, name= 'control_races'),
     re_path(r'^' + str(WEBHOOK_ENDPOINT) + '/$', FacebookWebhookView.as_view(), name='webhook'),
     path('policy/',views.policy, name = 'policy'),
-    re_path(r'^oauth/', include('social_django.urls', namespace="social"))
+    re_path(r'^oauth/', include('social_django.urls', namespace="social")),
+    path('change_track', views.change_track, name= 'change_track')
 ]
