@@ -26,6 +26,13 @@ class Client(models.Model):
 
 @receiver(post_save, sender=User)
 def create_or_update_client(sender, instance, created, **kwargs):
+    clients = Client.objects.raw('select * from client c where c.email=%s', [instance.email])
+    if clients:
+        client = clients[0]
+        client.user = instance
+        instance.client = client
+    else:
+        instance.client=Client(user=instance, email=instance.email) 
     instance.client.save()
 
 
