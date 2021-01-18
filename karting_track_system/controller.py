@@ -16,7 +16,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from .forms import SignUpForm
-
+from django.shortcuts import render, redirect
 UserModel = get_user_model()
 
 
@@ -235,9 +235,9 @@ def register(request):
         print('test')
         email.send()
         
-        return HttpResponse('Please confirm your email address to complete the registration')
+        return render(request, 'registration/registration_confirm_email.html')
     else:
-        return HttpResponseBadRequest('Bad request - username or email already taken')
+        return render(request, 'registration/registration_error.html')
 
 
 def activate_user(request, uidb64, token):
@@ -249,9 +249,10 @@ def activate_user(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        
+        return render(request, 'registration/email_confirmed.html')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return render(request, 'registration/email_confirmed_error.html')
 
 
 

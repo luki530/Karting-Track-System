@@ -18,7 +18,13 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="{{user.picture}}" alt="User" class="rounded-circle" width="150">
+                    <!-- {% for ass in backends.associated %}
+                      {% if ass.provider == 'facebook' %} -->
+                     <img src="{{ass.extra_data.picture.data.url}}" alt="User" class="rounded-circle" width="150">
+                     <!-- {% elif ass.provider == 'github'  %}
+                      <img src="https://github.com/{{ass.extra_data.login}}.png" alt="User" class="rounded-circle" width="150">
+                     {% endif %}
+                     {% endfor %} -->
                     <div class="mt-3">
                       <h4>{{ user.username }}</h4>
                     </div>

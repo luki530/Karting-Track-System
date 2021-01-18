@@ -11,6 +11,7 @@
                     {% csrf_token %}
                     <div class="form-group row">  
                         <div class="col-sm-10">
+                            
                             <select id="tracks"  name="tracks" class="custom-select" style="width: 500px;" multiple>
                                 {% for track in tracks %}
                                     <option value={{track.id}}>{{track.shape}}</option>

@@ -5,13 +5,15 @@
     <div class="col-md-12">
         <div class="card h-100">
             <div class="card-body">
-                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">drive_eta</i>Today's
+                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" style="display: inline-block;">drive_eta</i>Today's
                     races</h6>
+                <button type="submit" class="btn btn-dark">Add new race</button>
                 <div class="card-body listWrapper1">
                     <ul>
                         <form method="POST" id="track" action="{% url 'change_track' %}">
                             {% csrf_token %}
-                            <select id='new_track' name='new_track'>
+                            <h6>Select track:</h6>
+                            <select id='new_track' name='new_track' class="form-control" placeholder="Select track">
                                 {% for track in tracks %}
                                 {% if track.id is current_track %}
                                 <option value={{track.id}} selected>{{track.shape}}</option>
