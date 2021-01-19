@@ -5,9 +5,13 @@
     <div class="col-md-12">
         <div class="card h-100">
             <div class="card-body">
-                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" style="display: inline-block;">drive_eta</i>Today's
+                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"
+                        style="display: inline-block;">drive_eta</i>Today's
                     races</h6>
-                <button type="submit" class="btn btn-dark">Add new race</button>
+                <form method="POST" id="new_race" action="{% url 'new_race' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-dark">Add new race</button>
+                </form>
                 <div class="card-body listWrapper1">
                     <ul>
                         <form method="POST" id="track" action="{% url 'change_track' %}">
