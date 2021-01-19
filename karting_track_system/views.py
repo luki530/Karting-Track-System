@@ -117,6 +117,9 @@ def control_races(request):
         return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id), 'tracks' : tracks, 'current_track' : current_track})
     elif request.method == 'POST' and 'btn3' in request.POST:
         return statistics(request)
+    elif request.method == 'POST' and 'btn4' in request.POST:
+        race_id = request.POST.get('races')
+        return HttpResponse('test')
     else:
         if not ongoing_race_id == -1:
             return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id), 'tracks' : tracks, 'current_track' : current_track})
@@ -124,7 +127,6 @@ def control_races(request):
 
 @staff_member_required
 def new_race(request):
-    print('test')
     with connection.cursor() as cursor:
             cursor.callproc('new_race')
     return control_races(request)
