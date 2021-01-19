@@ -39,5 +39,6 @@ urlpatterns = [
     path('policy/',views.policy, name = 'policy'),
     re_path(r'^oauth/', include('social_django.urls', namespace="social")),
     path('change_track', views.change_track, name= 'change_track'),
-    path('new_race', views.new_race, name = 'new_race')
+    path('new_race', views.new_race, name = 'new_race'),
+    path('edit_race', views.edit_race, name = 'edit_race')
 ]
