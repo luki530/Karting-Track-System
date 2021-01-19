@@ -1,0 +1,100 @@
+{% extends "karting_track_system/base.html" %}
+{% block content %}
+<main role="main" class="container">
+    <div class="col-md-12">
+        <div class="card h-100">
+            <div class="card-body">
+                <form method="POST" id="delete_race" action="{% url 'edit_race' %}">
+                    {% csrf_token %}<li>
+                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"
+                                style="display: inline-block;">drive_eta</i>Race: {{edited_race.number}}, Date:
+                            {{edited_race.date}}</h6>
+                        <input type="hidden" name="race_to_delete_id" value="{{ edited_race.id }}" />
+                        <input type="hidden" name="races" value="{{ edited_race.id }}" />
+                        <button type="submit" class="btn btn-dark" id="delete_race" name="delete_race">Delete
+                            race</button>
+                    </li>
+                </form>
+                <div class="card-body listWrapper1">
+                    <ul>
+                        <div class="table-responsive">
+                            <table id="table" class="table table-hover table-curved"
+                                style="color:rgba(0, 162, 255, 0.692);">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Client</th>
+                                        <th scope="col">Kart</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                </thead>
+                                {% for race_driver in race_drivers %}
+                                <form method="POST" action="{% url 'edit_race' %}">
+                                    {% csrf_token %}
+                                    <tr>
+                                        <td>{{race_driver.client.name}}</td>
+                                        <td>Number: {{race_driver.kart.kart_number}} Model:
+                                            {{race_driver.kart.kart_model.model}}</td>
+                                        <td>
+                                            <input id="delete_race_driver" name="delete_race_driver" type="submit"
+                                                value="Delete" class="btn btn-outline-dark some_btn"
+                                                style="margin-bottom: 3px; width: 235px !important" />
+                                            <input type="hidden" name="race_driver_id" value="{{ race_driver.id }}" />
+                                            <input type="hidden" name="races" value="{{ edited_race.id }}" />
+                                        </td>
+                                    </tr>
+                                </form>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </ul>
+                </div>
+                <div class="table-responsive">
+                    <ul>
+                        <table id="table" class="table table-hover table-curved"
+                            style="color:rgba(0, 162, 255, 0.692);">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Client</th>
+                                    <th scope="col">Kart</th>
+                                    <th scope="col">Add</th>
+                                </tr>
+                            </thead>
+                            <form method="POST" action="{% url 'edit_race' %}">
+                                {% csrf_token %}
+                                <tr>
+                                    <td>
+                                        <select id='client' name='client' class="form-control"
+                                            placeholder="Select client">
+                                            {% for client in clients %}
+                                            <option value={{client.id}}>{{client.name}} {{client.client_number}}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id='kart' name='kart' class="form-control" placeholder="Select kart">
+                                            {% for kart in karts %}
+                                            <option value={{kart.id}}>Start number: {{kart.kart_number}} Model:
+                                                {{kart.kart_model.model}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="races" value="{{ edited_race.id }}" />
+                                        <button type="submit" class="btn btn-dark" id="add_race_driver"
+                                            name="add_race_driver">Add race driver</button>
+                                    </td>
+                                </tr>
+                            </form>
+                            </tbody>
+                        </table>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+{% endblock content %}

@@ -12,7 +12,7 @@ int main()
 	long long start_time = 1577869200; //1 stycznia 9:00 2020
     int day = 86400;
     int random = 0;
-    start_time+=265*day;
+    start_time+=300*day;
     int licznik0 = 1;
     for(int i = 0; i<100; i++){
         random = rand()%30;

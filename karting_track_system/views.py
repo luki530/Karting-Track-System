@@ -20,6 +20,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from datetime import date
+from django.db import connections
 
 from .forms import SignUpForm
 
@@ -101,12 +102,8 @@ def control_races(request):
     today = date.today()
     races = Race.objects.raw(
         'select * from race r where r.date=%s', [today])
-    if request.method == 'GET':
-        if not ongoing_race_id == -1:
-            return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id), 'tracks' : tracks, 'current_track' : current_track})
-        return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id), 'tracks' : tracks, 'current_track' : current_track})
 
-    elif request.method == 'POST' and 'btn_start' in request.POST:
+    if request.method == 'POST' and 'btn_start' in request.POST:
         race_id = request.POST.get('races')
         ongoing_race_id = int(race_id)
         return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id), 'tracks' : tracks, 'current_track' : current_track})
@@ -114,11 +111,44 @@ def control_races(request):
     elif request.method == 'POST' and 'btn_stop' in request.POST:
         race_id = request.POST.get('races')
         Race.objects.filter(id=race_id).update(finished=1)
+        with connection.cursor() as cursor:
+            cursor.callproc('clear_race', [race_id])
         ongoing_race_id = -1
         return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id), 'tracks' : tracks, 'current_track' : current_track})
     elif request.method == 'POST' and 'btn3' in request.POST:
         return statistics(request)
+    elif request.method == 'POST' and 'btn4' in request.POST:
+        race_id = request.POST.get('races')
+        return edit_race(request)
+    else:
+        if not ongoing_race_id == -1:
+            return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id), 'tracks' : tracks, 'current_track' : current_track})
+        return render(request, 'karting_track_system/control_races.html', {'races': races, 'ongoing_race_id': int(ongoing_race_id), 'tracks' : tracks, 'current_track' : current_track})
 
+@staff_member_required
+def new_race(request):
+    with connection.cursor() as cursor:
+            cursor.callproc('new_race')
+    return control_races(request)
+
+@staff_member_required
+def edit_race(request):
+    if 'delete_race' in request.POST:
+        Race.objects.filter(id=request.POST.get('race_to_delete_id')).delete()
+    elif 'delete_race_driver' in request.POST:
+        RaceDrivers.objects.filter(id=request.POST.get('race_driver_id')).delete()
+    elif 'add_race_driver' in request.POST:
+        race_id = request.POST.get('races')
+        client_id = request.POST.get('client')
+        kart_id = request.POST.get('kart')
+        RaceDrivers.objects.create(race_id=race_id, kart_id=kart_id, client_id=client_id)
+    race_id=request.POST.get('races')
+    race_drivers = RaceDrivers.objects.raw('select * from race_drivers where race_id=%s',[race_id])
+    edited_race = Race.objects.get(id=race_id)
+    clients = Client.objects.all()
+    karts = Kart.objects.all()
+    return render(request, 'karting_track_system/edit_race.html', {'edited_race' : edited_race, 'clients' : clients, 'karts' : karts, 'race_drivers' : race_drivers})
+        
 @staff_member_required
 def change_track(request):
     global current_track
