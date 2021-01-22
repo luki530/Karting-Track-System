@@ -20,7 +20,11 @@ It is an application for karting track to easily store and view lap times. Creat
 </details>
 
 ## Screenshots
+
+<details><summary>Show</summary>
 <img src="https://user-images.githubusercontent.com/29862993/105208057-8f9aec80-5b48-11eb-9ab4-84471668820f.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208067-9164b000-5b48-11eb-87bf-571410b61172.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208071-9295dd00-5b48-11eb-9474-f34267d0dc58.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208076-94f83700-5b48-11eb-91b7-595f800df47c.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208082-96c1fa80-5b48-11eb-868b-e7a41ac92071.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208086-988bbe00-5b48-11eb-855b-3867723d577b.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208091-99bceb00-5b48-11eb-9713-ddb3b1c91272.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208097-9a558180-5b48-11eb-935b-c7bc44e56df5.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208102-9b86ae80-5b48-11eb-8e6f-06cb81e763c9.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208107-9cb7db80-5b48-11eb-8af0-251af4c71c1e.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/29862993/105208115-9e819f00-5b48-11eb-8e61-98bae7d113ac.png" width="45%"></img> 
+
+</details>
 
 ## Technologies
 <details><summary>Show</summary>
@@ -51,7 +55,8 @@ It is an application for karting track to easily store and view lap times. Creat
 1. Create virtual environment.
 2. Install required packages with command:
 <code>pip3 install -r requirements.txt</code>
-3. Run server with python3 manage.py runserver
+3. Run server with 
+<code>python3 manage.py runserver</code>
 
 ## Contributors
 ### https://github.com/luki530
